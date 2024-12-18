@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id           String        @id @default(cuid())
+  name         String
+  email        String?
+  createdAt    DateTime      @default(now())
+  performances Performance[]
+  ageCategory  AgeCategory
+}
+
+model Performance {
+  id            String   @id @default(cuid())
+  playerId      String
+  player        Player   @relation(fields: [playerId], references: [id])
+  cubeType      CubeType
+  timeInSeconds Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([playerId, cubeType])
+}
+
+enum AgeCategory {
+  FOUR_TO_SIX
+  SIX_TO_EIGHT
+  EIGHT_TO_TEN
+  TEN_TO_TWELVE
+  TWELVE_TO_FOURTEEN
+  FOURTEEN_PLUS
+}
+
+enum CubeType {
+  CUBE_3X3
+  CUBE_2X2
+  PYRAMINX
+  CUBE_RELAY
+  MIRROR
+  SKEWB
+}
