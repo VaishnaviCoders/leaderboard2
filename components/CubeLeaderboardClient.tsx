@@ -196,7 +196,7 @@ const CubeLeaderboardClient = ({
                             </TooltipTrigger>
                             <TooltipContent className="text-blue-500 bg-blue-100">
                               <p className="text-blue-500 bg-blue-100">
-                                Indian National Record Holder
+                                National Record Holder
                               </p>
                             </TooltipContent>
                           </Tooltip>
