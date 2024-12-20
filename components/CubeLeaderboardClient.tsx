@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Medal } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { CuboidIcon as Cube } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const ageCategories = [
   // { id: 'ALL', label: 'ALL' },
@@ -40,7 +46,7 @@ const CubeLeaderboardClient = ({
 }: {
   performances: Performance[];
 }) => {
-  const [activeAge, setActiveAge] = useState('TEN_TO_TWELVE'); // Make It all
+  const [activeAge, setActiveAge] = useState('FOUR_TO_SIX'); // Make It all
   const [activeCube, setActiveCube] = useState('CUBE_3X3'); // Make It all
 
   const formatTime = (timeInSeconds: number) => {
@@ -97,18 +103,18 @@ const CubeLeaderboardClient = ({
             >
               <Cube className="h-10 w-10 text-white/90" />
             </motion.div>
-            <h1 className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl text-center">
-              Rsai Cube Dec-2024
+            <h1 className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-3xl font-bold text-transparent  sm:text-5xl text-center">
+              RSAI NATIONAL CUBE FEST 2024
             </h1>
           </div>
 
-          <h2 className="mt-4 text-center text-3xl font-semibold text-white/90">
-            Competition Leaderboard
+          <h2 className="mt-4 text-center text-2xl sm:text-3xl font-semibold text-white/90">
+            Clash of champions!
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-white/80">
-            Explore the top performers in the Rsai Cube Competition across
-            various age categories and cube types.
+            Honoring excellence in cubing – Official RSAI national records
+            across all age groups and events!
           </p>
         </div>
       </div>
@@ -178,12 +184,23 @@ const CubeLeaderboardClient = ({
                 {filteredPerformances.map((performance, index) => (
                   <tr
                     key={index}
-                    className="bg-white  border-b hover:bg-gray-50"
+                    className="bg-white border-b hover:bg-gray-50"
                   >
-                    <td className="px-6 block py-4 font-medium">
+                    <td className="px-6 py-4 font-medium flex">
                       {index + 1}
                       {index === 0 && (
-                        <span className="ml-2 text-yellow-500">🏆</span>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span className="ml-2 text-yellow-500">🏆</span>
+                            </TooltipTrigger>
+                            <TooltipContent className="text-blue-500 bg-blue-100">
+                              <p className="text-blue-500 bg-blue-100">
+                                Indian National Record Holder
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       )}
                       {index === 1 && (
                         <span className="ml-2 text-gray-400">🥈</span>

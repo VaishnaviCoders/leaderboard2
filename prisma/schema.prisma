@@ -12,20 +12,28 @@ model Player {
   name         String
   email        String?
   createdAt    DateTime      @default(now())
-  performances Performance[]
   ageCategory  AgeCategory
+  performances Performance[]
 }
 
 model Performance {
   id            String   @id @default(cuid())
   playerId      String
-  player        Player   @relation(fields: [playerId], references: [id])
   cubeType      CubeType
   timeInSeconds Float
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  player        Player   @relation(fields: [playerId], references: [id])
 
   @@unique([playerId, cubeType])
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
 }
 
 enum AgeCategory {
