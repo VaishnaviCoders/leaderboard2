@@ -2,7 +2,6 @@ import CubeLeaderboardClient from '@/components/CubeLeaderboardClient';
 import Footer from '@/components/Footer';
 import NavBar from '@/components/nav-bar';
 import prisma from '@/lib/db';
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 function Loading() {
