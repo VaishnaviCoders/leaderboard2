@@ -2,6 +2,7 @@ import CubeLeaderboardClient from '@/components/CubeLeaderboardClient';
 import Footer from '@/components/Footer';
 import NavBar from '@/components/nav-bar';
 import prisma from '@/lib/db';
+
 import { Suspense } from 'react';
 
 function Loading() {
@@ -13,6 +14,7 @@ function Loading() {
 }
 
 export default async function CubeLeaderboard() {
+  console.time('fetch-performances');
   const performances = await prisma.performance.findMany({
     include: {
       player: true,
@@ -21,6 +23,8 @@ export default async function CubeLeaderboard() {
       timeInSeconds: 'asc',
     },
   });
+  console.timeEnd('fetch-performances');
+  console.log('Performances:', performances);
 
   return (
     <div>
