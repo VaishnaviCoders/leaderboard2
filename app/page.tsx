@@ -3,15 +3,7 @@ import Footer from '@/components/Footer';
 import NavBar from '@/components/nav-bar';
 import prisma from '@/lib/db';
 
-import { Suspense } from 'react';
-
-function Loading() {
-  return (
-    <div className="flex justify-center items-center min-h-screen">
-      Loading...
-    </div>
-  );
-}
+export const revalidate = 10;
 
 export default async function CubeLeaderboard() {
   console.time('fetch-performances');
@@ -29,9 +21,9 @@ export default async function CubeLeaderboard() {
   return (
     <div>
       <NavBar />
-      <Suspense fallback={<Loading />}>
-        <CubeLeaderboardClient performances={performances} />
-      </Suspense>
+
+      <CubeLeaderboardClient performances={performances} />
+
       <Footer />
     </div>
   );

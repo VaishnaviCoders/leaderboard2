@@ -1,8 +1,10 @@
 'use server';
 
+import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
 import { contactFormSchema } from '@/lib/schemas';
 import { z } from 'zod';
+import { redirect } from 'next/navigation';
 type AgeCategory =
   | 'FOUR_TO_SIX'
   | 'SIX_TO_EIGHT'
@@ -15,6 +17,7 @@ type Performance = {
   cubeType: string;
   timeInSeconds: number;
 };
+
 export async function addPlayer(formData: FormData) {
   const name = formData.get('name')?.toString();
   const email = formData.get('email')?.toString();
@@ -30,6 +33,12 @@ export async function addPlayer(formData: FormData) {
     !isValidAgeCategory(ageCategory)
   ) {
     throw new Error('Required fields are missing or invalid.');
+  }
+
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
   }
 
   try {
@@ -118,4 +127,27 @@ export async function contactFormAction(
       errors: null,
     };
   }
+}
+
+export async function deletePlayerById(fromData: FormData) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return redirect('/');
+  }
+  const playerId = fromData.get('playerId') as string;
+
+  await prisma.performance.deleteMany({
+    where: {
+      playerId,
+    },
+  });
+
+  await prisma.player.delete({
+    where: {
+      id: playerId,
+    },
+  });
+
+  redirect('/dashboard/scores');
 }
