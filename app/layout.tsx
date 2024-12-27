@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   description: 'Created by Technolize Pvt',
 };
 
+<link rel="icon" href="/favicon.ico" sizes="any" />;
+
 export default function RootLayout({
   children,
 }: Readonly<{

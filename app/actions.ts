@@ -5,6 +5,8 @@ import prisma from '@/lib/db';
 import { contactFormSchema } from '@/lib/schemas';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+
+import { revalidatePath } from 'next/cache';
 type AgeCategory =
   | 'FOUR_TO_SIX'
   | 'SIX_TO_EIGHT'
@@ -60,6 +62,7 @@ export async function addPlayer(formData: FormData) {
     console.error('Error creating player:', error);
     throw new Error('Failed to add player. Please try again later.');
   }
+  revalidatePath('/', 'layout');
 }
 
 function isValidAgeCategory(category: string): category is AgeCategory {

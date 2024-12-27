@@ -7,6 +7,9 @@ const page = async () => {
     include: {
       performances: true,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
   return (
     <div className="flex flex-col gap-4 max-w-5xl mx-auto px-4">
@@ -23,7 +26,7 @@ const page = async () => {
               {player.ageCategory}
             </span>
             {player.performances.map((item, index) => (
-              <div key={item.id}>
+              <div key={index}>
                 {item.cubeType} - {item.timeInSeconds}
               </div>
             ))}
