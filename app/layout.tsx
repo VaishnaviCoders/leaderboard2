@@ -1,4 +1,11 @@
 import type { Metadata } from 'next';
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs';
 
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -8,16 +15,20 @@ export const metadata: Metadata = {
   description: 'Created by Technolize Pvt',
 };
 
+<link rel="icon" href="/favicon.ico" sizes="any" />;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body className={` antialiased`}>
-        {children} <Toaster />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning={true}>
+        <body className={` antialiased`}>
+          {children} <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

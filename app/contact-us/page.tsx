@@ -1,9 +1,4 @@
 import { ContactForm } from '@/components/contact-form';
-// import prisma from '@/lib/db';
-
-// const getContactFormData = async () => {
-//     await prisma.c
-// }
 
 export default function Page() {
   return (
