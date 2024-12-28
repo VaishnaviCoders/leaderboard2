@@ -10,18 +10,9 @@ import {
 } from '@/components/ui/card';
 import Link from 'next/link';
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default async function ScoreDeleteRoute({
-  params,
-}: PageProps) {
+export default async function ScoreDeleteRoute({ params }: any) {
   const { id } = params;
-  
+
   return (
     <div className="h-[80vh] flex justify-center items-center w-full">
       <Card className="max-w-xl">
