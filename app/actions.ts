@@ -5,75 +5,52 @@ import prisma from '@/lib/db';
 import { contactFormSchema } from '@/lib/schemas';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+import { AgeCategory } from '@prisma/client';
 
+import { addScoreSchema } from '@/lib/schemas';
 import { revalidatePath } from 'next/cache';
-type AgeCategory =
-  | 'FOUR_TO_SIX'
-  | 'SIX_TO_EIGHT'
-  | 'EIGHT_TO_TEN'
-  | 'TEN_TO_TWELVE'
-  | 'TWELVE_TO_FOURTEEN'
-  | 'FOURTEEN_PLUS';
-
-type Performance = {
-  cubeType: string;
-  timeInSeconds: number;
-};
 
 export async function addPlayer(formData: FormData) {
-  const name = formData.get('name')?.toString();
-  const email = formData.get('email')?.toString();
-  const ageCategory = formData.get('ageCategory')?.toString() as AgeCategory;
-  const performances = formData.get('performances')
-    ? JSON.parse(formData.get('performances')!.toString())
-    : [];
-
-  if (
-    !name ||
-    !ageCategory ||
-    !performances.length ||
-    !isValidAgeCategory(ageCategory)
-  ) {
-    throw new Error('Required fields are missing or invalid.');
-  }
-
-  const { userId } = await auth();
-
-  if (!userId) {
-    redirect('/');
-  }
-
   try {
-    // Create a new player with performances
+    // Parse and validate form data
+    const data = addScoreSchema.parse({
+      name: formData.get('name'),
+      email: formData.get('email') || '',
+      ageCategory: formData.get('ageCategory'),
+      performances: formData.get('performances')
+        ? JSON.parse(formData.get('performances')!.toString())
+        : [],
+    });
+
+    // Authenticate the user
+    const { userId, redirectToSignIn } = await auth();
+    if (!userId) return redirectToSignIn();
+
+    // Create player and performances
     await prisma.player.create({
       data: {
-        name,
-        email,
-        ageCategory,
+        name: data.name,
+        email: data.email,
+        ageCategory: data.ageCategory as AgeCategory,
         performances: {
-          create: performances.map((performance: Performance) => ({
-            cubeType: performance.cubeType,
-            timeInSeconds: performance.timeInSeconds,
+          create: data.performances.map((perf) => ({
+            cubeType: perf.cubeType,
+            timeInSeconds:
+              perf.time.minutes * 60 +
+              perf.time.seconds +
+              perf.time.milliseconds / 1000,
           })),
         },
       },
     });
+
+    // Handle cache invalidation for the dashboard page
+    revalidatePath('/', 'layout');
+    console.log('Player added successfully.');
   } catch (error) {
-    console.error('Error creating player:', error);
+    console.error('Error adding player:', error);
     throw new Error('Failed to add player. Please try again later.');
   }
-  revalidatePath('/', 'layout');
-}
-
-function isValidAgeCategory(category: string): category is AgeCategory {
-  return [
-    'FOUR_TO_SIX',
-    'SIX_TO_EIGHT',
-    'EIGHT_TO_TEN',
-    'TEN_TO_TWELVE',
-    'TWELVE_TO_FOURTEEN',
-    'FOURTEEN_PLUS',
-  ].includes(category);
 }
 
 export async function contactFormAction(

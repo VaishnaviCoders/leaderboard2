@@ -10,6 +10,8 @@ export const addScoreSchema = z.object({
     'TEN_TO_TWELVE',
     'TWELVE_TO_FOURTEEN',
     'FOURTEEN_PLUS',
+    'TEACHERS',
+    'PARENTS',
   ]),
   performances: z
     .array(

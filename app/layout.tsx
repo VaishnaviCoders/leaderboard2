@@ -1,14 +1,9 @@
 import type { Metadata } from 'next';
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { GeistSans } from 'geist/font/sans';
 
 export const metadata: Metadata = {
   title: 'Rsai Leaderboard Dec-2024',
@@ -24,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning={true}>
+      <html
+        lang="en"
+        suppressHydrationWarning={true}
+        className={GeistSans.className}
+      >
         <body className={` antialiased`}>
           {children} <Toaster />
         </body>

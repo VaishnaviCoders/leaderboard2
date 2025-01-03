@@ -34,6 +34,8 @@ const ageCategoryOptions = [
   { value: 'TEN_TO_TWELVE', label: '10-12 years' },
   { value: 'TWELVE_TO_FOURTEEN', label: '12-14 years' },
   { value: 'FOURTEEN_PLUS', label: '14+ years' },
+  { value: 'TEACHERS', label: 'Teachers' },
+  { value: 'PARENTS', label: 'Parents' },
 ];
 
 const cubeTypeOptions = [
@@ -75,25 +77,25 @@ export default function CubePerformanceForm() {
     setIsSubmitting(true);
     // Simulate API call
     try {
+      const performances = data.performances.map((performance) => ({
+        ...performance,
+        timeInSeconds:
+          performance.time.minutes * 60 +
+          performance.time.seconds +
+          performance.time.milliseconds / 1000,
+      }));
+
       const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('email', data.email || '');
-      formData.append('ageCategory', data.ageCategory);
-      formData.append(
-        'performances',
-        JSON.stringify(
-          data.performances.map((p) => ({
-            ...p,
-            timeInSeconds:
-              p.time.minutes * 60 + p.time.seconds + p.time.milliseconds / 1000,
-          }))
-        )
-      );
+      formData.set('name', data.name);
+      formData.set('email', data.email || '');
+      formData.set('ageCategory', data.ageCategory);
+      formData.set('performances', JSON.stringify(performances));
 
       await addPlayer(formData);
+
       toast({
-        title: 'Data Added Successfully',
-        description: 'Player And There Performance Added Successfully ',
+        title: 'Success',
+        description: 'Player data added successfully!',
       });
       form.reset();
     } catch (error) {
