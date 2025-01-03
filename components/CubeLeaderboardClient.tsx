@@ -21,6 +21,8 @@ const ageCategories = [
   { id: 'TEN_TO_TWELVE', label: '10-12 years' },
   { id: 'TWELVE_TO_FOURTEEN', label: '12-14 years' },
   { id: 'FOURTEEN_PLUS', label: '14+ years' },
+  { id: 'TEACHERS', label: 'Teachers' },
+  { id: 'PARENTS', label: 'Parents' },
 ];
 
 const cubeTypes = [

@@ -43,6 +43,8 @@ enum AgeCategory {
   TEN_TO_TWELVE
   TWELVE_TO_FOURTEEN
   FOURTEEN_PLUS
+  TEACHERS
+  PARENTS
 }
 
 enum CubeType {

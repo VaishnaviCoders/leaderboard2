@@ -24,7 +24,7 @@ export default async function ScoreDeleteRoute({ params }: any) {
           </CardDescription>
           <CardFooter className="justify-end flex gap-3 items-center">
             <Button variant="outline">
-              <Link href="/dashboard/banners">Cancel</Link>
+              <Link href="/dashboard/scores">Cancel</Link>
             </Button>
             <form action={deletePlayerById}>
               <input type="hidden" name="playerId" value={id} />
